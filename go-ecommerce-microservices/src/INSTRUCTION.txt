@@ -1,0 +1,23 @@
+SQL
+
+sudo service postgresql start
+sudo -u postgres psql    // Опционально
+CREATE DATABASE shopapi OWNER be4;
+CREATE DATABASE auth_db OWNER be4;
+DROP DATABASE ___;
+
+Терминал SHOP-API:
+export DATABASE_URL='postgres://be4:1@localhost:5432/shopapi?sslmode=disable'
+psql "$DATABASE_URL" -f migrations/001_init.sql // Создать схему таблиц по шаблону в инит файле
+
+Терминал AUTH-SERVICE:
+export DATABASE_URL='postgres://be4:1@localhost:5432/auth_db?sslmode=disable'
+psql "$DATABASE_URL" -f migrations/001_users.sql // Создать схему таблиц по шаблону в инит файле
+
+psql "$DATABASE_URL" -c '\dt' // Вывод схемы таблиц 
+
+SWAGGER 
+
+swag init -g cmd/api/main.go -o docs       // Обновить доки
+go run ./cmd/api                          // Запуск сервера
+http://localhost:8080/swagger/index.html // Запуск Сваггера
